@@ -277,6 +277,7 @@ DEPENDENCIES
   jekyll-toc
   jekyll-twitter-plugin
   jemoji
+  listen (~> 3.9)
   observer
   ostruct
   terser
