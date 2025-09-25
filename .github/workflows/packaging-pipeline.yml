@@ -9,7 +9,6 @@ jobs:
   build_opencue_packages:
     name: Build Python Packages
     runs-on: ubuntu-22.04
-    container: docker.io/library/python:3.7
     outputs:
       opencue_proto_path: ${{ steps.package_outputs.outputs.opencue_proto_path }}
       opencue_rqd_path: ${{ steps.package_outputs.outputs.opencue_rqd_path }}
@@ -24,6 +23,11 @@ jobs:
         with:
           fetch-tags: true
           fetch-depth: 0
+
+      - name: Set up Python 3.7
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.7'
 
       - name: Mark repository as safe (Fix for https://github.com/actions/checkout/issues/1048)
         run: git config --global --add safe.directory $GITHUB_WORKSPACE
@@ -263,7 +267,6 @@ jobs:
       - integration_test
       - build_opencue_packages
     runs-on: ubuntu-22.04
-    container: docker.io/library/python:3.11
     name: "Upload python packages to testpypi repo"
     environment: testpypi
     continue-on-error: true
@@ -273,6 +276,11 @@ jobs:
       TWINE_REPOSITORY: "testpypi"
 
     steps:
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
       - name: Download artifact
         uses: actions/download-artifact@v4
         with:

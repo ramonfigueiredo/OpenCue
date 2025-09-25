@@ -10,7 +10,6 @@ jobs:
   build_opencue_packages:
     name: Build Python Packages
     runs-on: ubuntu-22.04
-    container: docker.io/library/python:3.7
     outputs:
       opencue_proto_path: ${{ steps.package_outputs.outputs.opencue_proto_path }}
       opencue_pycue_path: ${{ steps.package_outputs.outputs.opencue_pycue_path }}
@@ -24,6 +23,11 @@ jobs:
         with:
           fetch-tags: true
           fetch-depth: 0
+
+      - name: Set up Python 3.7
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.7'
 
       - name: Mark repository as safe (Fix for https://github.com/actions/checkout/issues/1048)
         run: git config --global --add safe.directory $GITHUB_WORKSPACE
@@ -57,8 +61,12 @@ jobs:
       fail-fast: false
       matrix:
         python-version: ["3.7", "3.9", "3.10", "3.11"]
-    container: docker.io/library/python:${{ matrix.python-version }}
     steps:
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+
       - name: Download artifact
         uses: actions/download-artifact@v4
         with:
