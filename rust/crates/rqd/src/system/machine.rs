@@ -544,6 +544,7 @@ impl MachineMonitor {
         info!("Collected: {}({} KIB) total, {}({} KIB) available",
             stats.total_memory,
             stats.total_memory / KIB,
+            stats.available_memory,
             stats.available_memory / KIB);
 
         Ok(RenderHost {
